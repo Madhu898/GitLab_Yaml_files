@@ -1,0 +1,22 @@
+services:
+    - mariadb:10.5
+image: centos:7.6
+variables:
+    MYSQL_PASSWORD: Qwert!01
+    MYSQL_PASSWORD2: madhu123
+    MYSQL_DATABASE: dw
+    MYSQL_DATABASE_TABLE : testing
+
+
+stages:
+    - deploy
+deploy_job:
+    stage: deploy 
+    script:
+        - echo "hello world"
+        - echo $MYSQL_PASSWORD         
+        - /maria_engine/mariadb/bin/mysql -h 10.106.139.24 -P 3306 -u root -p$MYSQL_PASSWORD2 #To connect With External Mariadb Database
+        - /maria_engine/mariadb/bin/mysql -u haei -p$MYSQL_PASSWORD #To connect With Local Host MariaDb Database
+        - /maria_engine/mariadb/bin/mysql -u haei -p$MYSQL_PASSWORD < my_database_commands.sql #To execute the sql commands which are written in the ( my_database_commands.sql) File which is present in the repository of gitlab with connected database 
+    only:
+        - main
